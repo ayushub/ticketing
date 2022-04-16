@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { getAllJSDocTagsOfKind } from "typescript";
+import { Password } from "../services/password";
 
 // an interface that describes the props
 // that are required to create a new User
@@ -31,6 +32,15 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+userSchema.pre("save", async function (done) {
+  if (this.isModified("password")) {
+    const hashed = await Password.toHash(this.get("password"));
+    this.set("password", hashed);
+  }
+  done();
+});
+
 userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 };
