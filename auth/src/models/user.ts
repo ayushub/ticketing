@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { getAllJSDocTagsOfKind } from "typescript";
 import { Password } from "../services/password";
 
 // an interface that describes the props
