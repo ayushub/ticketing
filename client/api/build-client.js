@@ -6,10 +6,10 @@ export default ({ req }) => {
     // server side call
     baseURL = "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local";
   }
-
+  console.log(req);
   return axios.create({
     baseURL,
     // mainly for host (when making api call with the above baseurl since nginx doesn't understand that domain) and cookie
-    headers: req.headers,
+    headers: req?.headers,
   });
 };
