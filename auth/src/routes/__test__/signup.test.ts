@@ -20,3 +20,40 @@ it("returns a 400 on invalid email", async () => {
     })
     .expect(400);
 });
+
+it("returns a 400 on very lengthy password", async () => {
+  return request(app)
+    .post("/api/users/signup")
+    .send({
+      email: "test@testcom",
+      password: "passwordpasswordpassword",
+    })
+    .expect(400);
+});
+
+it("returns a 400 on password < 4 chars", async () => {
+  return request(app)
+    .post("/api/users/signup")
+    .send({
+      email: "test@testcom",
+      password: "p",
+    })
+    .expect(400);
+});
+
+it("returns a 400 with missing email and password", async () => {
+  await request(app)
+    .post("/api/users/signup")
+    .send({
+      email: "test@test.cpomo",
+      password: "",
+    })
+    .expect(400);
+  await request(app)
+    .post("/api/users/signup")
+    .send({
+      email: "",
+      password: "password",
+    })
+    .expect(400);
+});
