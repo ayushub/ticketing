@@ -3,22 +3,6 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { app } from "../app";
 
-/***
- * To fix typeof globalThis has no index signature.ts errors
- * change
- *
- * declare global {
- * namespace NodeJS {
- * export interface Global {
- * signin(): Promise<string[]>;
- * }}}
- *
- * to
- * declare global {
- *  var signin: () => Promise<string[]>;
- * }
- */
-
 declare global {
   var signin: () => Promise<string[]>;
 }
