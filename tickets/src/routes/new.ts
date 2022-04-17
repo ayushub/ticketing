@@ -1,4 +1,4 @@
-import { currentUser, requireAuth, validateRequest } from "@aatix/common";
+import { requireAuth, validateRequest } from "@aatix/common";
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { Ticket } from "../models/ticket";
