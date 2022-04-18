@@ -47,7 +47,7 @@ router.post(
       expiresAt,
       ticket,
     });
-
+    order.save();
     // publish an event for the created order
     res.status(201).send(order);
   }
