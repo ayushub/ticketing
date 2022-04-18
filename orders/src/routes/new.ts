@@ -22,7 +22,7 @@ router.post(
       .notEmpty()
       //check that the ID looks like a mongo db ID
       .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
-      .withMessage("TicketId must be provided"),
+      .withMessage("Valid ticketId must be provided"),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
