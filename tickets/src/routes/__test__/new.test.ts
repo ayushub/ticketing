@@ -1,4 +1,3 @@
-import { RequestValidationError } from "@aatix/common";
 import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
