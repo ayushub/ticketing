@@ -4,6 +4,10 @@ import "express-async-errors";
 import cookieSession from "cookie-session";
 
 import { currentUser, errorHandler, NotFoundError } from "@aatix/common";
+import { indexOrderRouter } from "./routes";
+import { showOrderRouter } from "./routes/show";
+import { deleteOrderRouter } from "./routes/delete";
+import { createOrderRouter } from "./routes/new";
 
 const app = express();
 app.set("trust proxy", true);
@@ -17,6 +21,11 @@ app.use(
 );
 
 app.use(currentUser);
+
+app.use(indexOrderRouter);
+app.use(showOrderRouter);
+app.use(deleteOrderRouter);
+app.use(createOrderRouter);
 
 app.all("*", async () => {
   throw new NotFoundError();
