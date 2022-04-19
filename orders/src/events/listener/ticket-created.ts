@@ -1,8 +1,12 @@
-import { Listener, Subjects, TicketCreatedEvent } from "@aatix/common";
+import {
+  Listener,
+  Subjects,
+  TicketCreatedEvent,
+  TicketUpdatedEvent,
+} from "@aatix/common";
 import { Message } from "node-nats-streaming";
-import { Ticket } from "../models/ticket";
-
-const queueGroupName: string = "orders-service-listener";
+import { Ticket } from "../../models/ticket";
+import { queueGroupName } from "./queue-group-name";
 
 export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
   subject: Subjects.TicketCreated = Subjects.TicketCreated;
