@@ -30,6 +30,7 @@ it("throws not found on invalid order", async () => {
 it("throws not auth error if user does not own the order", async () => {
   // create a ticket
   const ticket = Ticket.build({
+    id: "1234",
     title: "concert",
     price: 21,
   });
@@ -54,6 +55,7 @@ it("throws not auth error if user does not own the order", async () => {
 it("marks order as cancelled", async () => {
   // create a ticket
   const ticket = Ticket.build({
+    id: "1234",
     title: "concert",
     price: 21,
   });
@@ -82,6 +84,7 @@ it("marks order as cancelled", async () => {
 it("emits a order cancelled event", async () => {
   // create a ticket
   const ticket = Ticket.build({
+    id: "1234",
     title: "concert",
     price: 21,
   });

@@ -27,6 +27,7 @@ it("throws not found on invalid order", async () => {
 it("throws not auth error if user does not own the order", async () => {
   // create a ticket
   const ticket = Ticket.build({
+    id: "1234",
     title: "concert",
     price: 21,
   });
@@ -51,6 +52,7 @@ it("throws not auth error if user does not own the order", async () => {
 it("fetches the order", async () => {
   // create a ticket
   const ticket = Ticket.build({
+    id: "1234",
     title: "concert",
     price: 21,
   });
