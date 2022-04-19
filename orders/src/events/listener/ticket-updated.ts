@@ -1,9 +1,4 @@
-import {
-  Listener,
-  Subjects,
-  TicketCreatedEvent,
-  TicketUpdatedEvent,
-} from "@aatix/common";
+import { Listener, Subjects, TicketUpdatedEvent } from "@aatix/common";
 import { Message } from "node-nats-streaming";
 import { Ticket } from "../../models/ticket";
 import { queueGroupName } from "./queue-group-name";
