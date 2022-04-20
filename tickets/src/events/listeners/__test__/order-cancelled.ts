@@ -7,16 +7,18 @@ import { OrderCreatedListener } from "../order-created";
 
 const setup = async () => {
   const listener = new OrderCreatedListener(natsWrapper.client);
+  const orderId = new mongoose.Types.ObjectId().toHexString();
 
   const ticket = Ticket.build({
     title: "concert",
     price: 99,
     userId: new mongoose.Types.ObjectId().toHexString(),
   });
+  ticket.set({ orderId });
   await ticket.save();
 
   const data: OrderCreatedEvent["data"] = {
-    id: new mongoose.Types.ObjectId().toHexString(),
+    id: orderId,
     status: OrderStatus.Created,
     userId: new mongoose.Types.ObjectId().toHexString(),
     expiresAt: "tomorrow",
@@ -32,5 +34,22 @@ const setup = async () => {
     ack: jest.fn,
   };
 
-  return { listener, ticket, data, msg };
+  return { listener, orderId, ticket, data, msg };
 };
+
+it("", async () => {
+  const { listener, orderId, ticket, data, msg } = await setup();
+
+  await listener.onMessage(data, msg);
+
+  const updatedTicket = await Ticket.findById(ticket.id);
+  expect(updatedTicket!.orderId).toEqual(orderId);
+});
+
+it("", async () => {
+  const { listener, ticket, data, msg } = await setup();
+
+  await listener.onMessage(data, msg);
+
+  expect(msg.ack).toHaveBeenCalled();
+});
