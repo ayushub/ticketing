@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import { Order, OrderStatus } from "./order";
-import { updateIfCurrentPlugin } from "mongoose-update-if-current";
-import { idText, version } from "typescript";
+// import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 interface TicketAttrs {
   id: string;
   title: string;
@@ -46,6 +45,28 @@ const ticketSchema = new mongoose.Schema(
   }
 );
 
+ticketSchema.set("versionKey", "version");
+// ticketSchema.plugin(updateIfCurrentPlugin);
+
+const previousVersion = (version: number) => {
+  return version - 1;
+};
+
+ticketSchema.pre("save", function (done) {
+  this.$where = {
+    version: previousVersion(this.get("version")),
+  };
+
+  done();
+});
+
+ticketSchema.statics.findByEvent = (event: { id: string; version: number }) => {
+  return Ticket.findOne({
+    _id: event.id,
+    version: previousVersion(event.version),
+  });
+};
+
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
   return new Ticket({
     _id: attrs.id,
@@ -53,16 +74,6 @@ ticketSchema.statics.build = (attrs: TicketAttrs) => {
     price: attrs.price,
   });
 };
-
-ticketSchema.statics.findByEvent = (event: { id: string; version: number }) => {
-  return Ticket.findOne({
-    _id: event.id,
-    version: event.version - 1,
-  });
-};
-
-ticketSchema.set("versionKey", "version");
-ticketSchema.plugin(updateIfCurrentPlugin);
 
 ticketSchema.methods.isReserved = async function () {
   const existingOrder = await Order.findOne({
