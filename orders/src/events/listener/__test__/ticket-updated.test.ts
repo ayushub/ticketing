@@ -55,3 +55,14 @@ it("acks the message", async () => {
 
   expect(msg.ack).toHaveBeenCalled();
 });
+
+it("throws an error when version is not next in sequence", async () => {
+  const { listener, data, msg } = await setup();
+
+  data.version = 10;
+  try {
+    await listener.onMessage(data, msg);
+  } catch (err) {}
+
+  expect(msg.ack).not.toHaveBeenCalled();
+});
