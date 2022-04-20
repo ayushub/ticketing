@@ -24,6 +24,14 @@ build:
         manual:
           - src: '**/*.js'
             dest: .
+    - image: ayu5h/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
     - image: ayu5h/tickets
       context: tickets
       docker:
