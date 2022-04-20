@@ -1,4 +1,5 @@
 import {
+  BadRequestError,
   NotAuthorizedError,
   NotFoundError,
   requireAuth,
@@ -28,6 +29,9 @@ router.put(
     if (!ticket) throw new NotFoundError();
 
     if (req.currentUser?.id !== ticket.userId) throw new NotAuthorizedError();
+
+    if (ticket.orderId)
+      throw new BadRequestError("Cannot edit a reserved ticket");
 
     const { title, price } = req.body;
 
