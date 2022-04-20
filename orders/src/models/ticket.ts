@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Order, OrderStatus } from "./order";
-
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 interface TicketAttrs {
   id: string;
   title: string;
@@ -10,6 +10,7 @@ interface TicketAttrs {
 export interface TicketDoc extends mongoose.Document {
   title: string;
   price: number;
+  version: number;
   isReserved(): Promise<boolean>;
 }
 
@@ -47,6 +48,9 @@ ticketSchema.statics.build = (attrs: TicketAttrs) => {
     price: attrs.price,
   });
 };
+
+ticketSchema.set("versionKey", "version");
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 ticketSchema.methods.isReserved = async function () {
   const existingOrder = await Order.findOne({
