@@ -8,7 +8,7 @@ export class ExpiredListener extends Listener<ExpiredEvent> {
   subject: Subjects.Expired = Subjects.Expired;
   queueGroupName: string = queueGroupName;
   async onMessage(data: { orderId: string }, msg: Message): Promise<void> {
-    const order = await Order.findById(data.orderId);
+    const order = await Order.findById(data.orderId).populate("ticket");
 
     if (!order) throw new Error("Order not found");
 
