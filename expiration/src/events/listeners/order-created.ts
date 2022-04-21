@@ -5,12 +5,13 @@ import {
   Subjects,
 } from "@aatix/common";
 import { Message } from "node-nats-streaming";
+import { expirationQueue } from "../../queues/expiration-queue";
 import { queueGroupName } from "./queue-group-name";
 
 export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   subject: Subjects.OrderCreated = Subjects.OrderCreated;
   queueGroupName: string = queueGroupName;
-  onMessage(
+  async onMessage(
     data: {
       id: string;
       status: OrderStatus;
@@ -20,8 +21,9 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
       ticket: { id: string; price: number };
     },
     msg: Message
-  ): void {
+  ): Promise<void> {
     // wait 15 mins
+    await expirationQueue.add({ orderId: data.id });
 
     // publish order-expired event
 
