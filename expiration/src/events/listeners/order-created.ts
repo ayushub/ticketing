@@ -32,8 +32,6 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
       }
     );
 
-    // publish order-expired event
-
     msg.ack();
   }
 }

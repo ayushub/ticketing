@@ -1,4 +1,6 @@
 import Queue from "bull";
+import { ExpiredPublisher } from "../events/expired-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 if (!process.env.REDIS_HOST) throw new Error("REDIS_HOST must be defined");
 
@@ -13,10 +15,10 @@ const expirationQueue = new Queue<Payload>("order:expiration", {
 });
 
 expirationQueue.process(async (job) => {
-  console.log(
-    "I want to publish an expiration:complete event for orderId",
-    job.data.orderId
-  );
+  // publish order-expired event
+  await new ExpiredPublisher(natsWrapper.client).publish({
+    orderId: job.data.orderId,
+  });
 });
 
 export { expirationQueue };
