@@ -23,7 +23,12 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
     msg: Message
   ): Promise<void> {
     // wait 15 mins
-    await expirationQueue.add({ orderId: data.id });
+    await expirationQueue.add(
+      { orderId: data.id },
+      {
+        delay: 10000,
+      }
+    );
 
     // publish order-expired event
 
