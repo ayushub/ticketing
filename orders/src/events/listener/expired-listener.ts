@@ -1,6 +1,7 @@
 import { ExpiredEvent, Listener, Subjects } from "@aatix/common";
 import { Message } from "node-nats-streaming";
 import { Order, OrderStatus } from "../../models/order";
+import { OrderCancelledPublisher } from "../publishers";
 import { queueGroupName } from "./queue-group-name";
 
 export class ExpiredListener extends Listener<ExpiredEvent> {
@@ -12,7 +13,15 @@ export class ExpiredListener extends Listener<ExpiredEvent> {
     if (!order) throw new Error("Order not found");
 
     order.set({ status: OrderStatus.Cancelled });
-    order.save();
+    await order.save();
+
+    await new OrderCancelledPublisher(this.client).publish({
+      id: order.id,
+      version: order.version,
+      ticket: {
+        id: order.ticket.id,
+      },
+    });
 
     msg.ack();
   }
