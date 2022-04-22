@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import request from "supertest";
 import { app } from "../../app";
 import { Order, OrderStatus } from "../../models/order";
+import { stripe } from "../../stripe";
 
 it("throw not found if order id doesnot exist", async () => {
   await request(app)
@@ -73,5 +74,9 @@ it("creates a payment", async () => {
       token: "tok_visa",
       orderId: order.id,
     })
-    .expect(204);
+    .expect(201);
+
+  expect(stripe.charges.create).toHaveBeenCalled();
+  const chargeOptions = (stripe.charges.create as jest.Mock).mock.calls[0][0];
+  expect(chargeOptions.amount).toEqual(1000);
 });
