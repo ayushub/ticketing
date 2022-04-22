@@ -23,6 +23,7 @@ kubectl apply -f infra/k8s
 ### Step 4. Add the jwt secret
 ```kubernetes
 kubectl create secret generic jwt-secret --from-literal=JWT_KEY=MY_JWT_SECRET
+kubectl create secret generic stripe-secret --from-literal STRIPE_KEY=sk_test_SECRET_KEY
 ```
 ## Making Changes
 
