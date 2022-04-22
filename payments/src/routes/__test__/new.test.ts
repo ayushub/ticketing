@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import request from "supertest";
 import { app } from "../../app";
 import { Order, OrderStatus } from "../../models/order";
+import { Payment } from "../../models/payment";
 import { stripe } from "../../stripe";
 
 it("throw not found if order id doesnot exist", async () => {
@@ -79,4 +80,11 @@ it("creates a payment", async () => {
   expect(stripe.charges.create).toHaveBeenCalled();
   const chargeOptions = (stripe.charges.create as jest.Mock).mock.calls[0][0];
   expect(chargeOptions.amount).toEqual(1000);
+
+  const payment = await Payment.findOne({
+    orderId: order.id,
+    stripeId: "mock_fn_returned_id",
+  });
+
+  expect(payment).not.toBeNull();
 });
