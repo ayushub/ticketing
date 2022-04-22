@@ -3,6 +3,7 @@ import request from "supertest";
 import { app } from "../../app";
 import { Order, OrderStatus } from "../../models/order";
 import { Payment } from "../../models/payment";
+import { natsWrapper } from "../../nats-wrapper";
 import { stripe } from "../../stripe";
 
 it("throw not found if order id doesnot exist", async () => {
@@ -87,4 +88,27 @@ it("creates a payment", async () => {
   });
 
   expect(payment).not.toBeNull();
+});
+
+it("publishes an event when payment is created", async () => {
+  const userId = new mongoose.Types.ObjectId().toHexString();
+  const order = Order.build({
+    userId: userId,
+    id: new mongoose.Types.ObjectId().toHexString(),
+    version: 0,
+    price: 10,
+    status: OrderStatus.Created,
+  });
+  await order.save();
+
+  await request(app)
+    .post("/api/payments")
+    .set("Cookie", global.signin(userId))
+    .send({
+      token: "tok_visa",
+      orderId: order.id,
+    })
+    .expect(201);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
