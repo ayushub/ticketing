@@ -54,3 +54,24 @@ it("throws a bad request error, when order is cancelled", async () => {
     })
     .expect(400);
 });
+
+it("creates a payment", async () => {
+  const userId = new mongoose.Types.ObjectId().toHexString();
+  const order = Order.build({
+    userId: userId,
+    id: new mongoose.Types.ObjectId().toHexString(),
+    version: 0,
+    price: 10,
+    status: OrderStatus.Created,
+  });
+  await order.save();
+
+  await request(app)
+    .post("/api/payments")
+    .set("Cookie", global.signin(userId))
+    .send({
+      token: "tok_visa",
+      orderId: order.id,
+    })
+    .expect(204);
+});

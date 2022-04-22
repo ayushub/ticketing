@@ -35,7 +35,7 @@ router.post(
       source: token,
       description: order.id,
     });
-    res.send({ success: true });
+    res.status(204).send({ success: true });
   }
 );
 
