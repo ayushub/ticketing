@@ -3,3 +3,4 @@ node_modules
 common
 nats-test
 .DS_Store
+.vscode
