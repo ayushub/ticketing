@@ -19,7 +19,7 @@ export default ({ currentUser }) => {
       );
     });
   return (
-    <div className="navbar navbar-light bg-light">
+    <nav className="navbar navbar-light bg-light">
       <Link href="/">
         <a className="navbar-brand">Ticketek</a>
       </Link>
@@ -27,6 +27,6 @@ export default ({ currentUser }) => {
       <div className="d-flex justify-content-end">
         <ul className="nav d-flex align-items-center">{links}</ul>
       </div>
-    </div>
+    </nav>
   );
 };
