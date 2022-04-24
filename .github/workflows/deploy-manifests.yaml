@@ -19,4 +19,4 @@ jobs:
             az login --service-principal
             az account show
             az az aks get-credentials -n ${{ secrets.AKS_NAME }} -g ${{ secrets.AKS_RG }}
-            kubeclt apply -f FILEPATH??
+            kubectl apply -f FILEPATH??
