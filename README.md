@@ -17,7 +17,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 
 ### Step 3. Apply the infra/k8s
 ```kubernetes
-kubectl apply -f infra/k8s
+kubectl apply -f infra/k8s -f infra/k8s-dev
 ```
 
 ### Step 4. Add the jwt secret
