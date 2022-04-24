@@ -21,7 +21,7 @@ export default ({ currentUser }) => {
   return (
     <nav className="navbar navbar-light bg-light">
       <Link href="/">
-        <a className="navbar-brand">Ticketek</a>
+        <a className="navbar-brand">Ayush's Playground</a>
       </Link>
 
       <div className="d-flex justify-content-end">
