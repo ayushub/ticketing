@@ -5,6 +5,8 @@ export default ({ req }) => {
   if (typeof window === "undefined") {
     // server side call
     baseURL = "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local";
+    // PROD
+    baseURL = "http://www.ayusplayground.xyz";
   }
   console.log(req);
   return axios.create({
