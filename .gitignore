@@ -4,3 +4,4 @@ common
 nats-test
 .DS_Store
 .vscode
+*local.ps1
